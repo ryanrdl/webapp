@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flash Test live data</title>
+	<link id="themecss" rel="stylesheet" type="text/css" href="stylesheets/all.min.css" />
+    <script src="javascripts/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="javascripts/Chart.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="javascripts/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="javascripts/shieldui-all.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+	<link href="stylesheets/w3.css" rel="stylesheet"/>
+    <link href="stylesheets/style.css" rel="stylesheet"/>
+</head>
+
+<body>
+	<div style="display:flex">
+	<div>
+	<table style="width:100%">
+	  <tr height= "150">
+		<td id="parentTable1" width="70%" bgcolor="#f4f5f6"><canvas id="myChart"></canvas></td>
+		<td id="parentTable2" bgcolor="#f4f5f6"><canvas id="pieChart"></canvas></td> 
+	  </tr>
+	  <tr height= "225">
+		<td id="parentTable3" width="70%" bgcolor="#f4f5f6">
+			<div id="grid"></div>			
+		</td>
+		<td id="parentTable4" bgcolor="#f4f5f6">
+			<table id="labels" style="width:100%; height:225">
+			<tr>
+				<td bgcolor="#fff"><p id="label1"></p><p class="labels">Max Avg Temp</p></td>
+				<td bgcolor="#fff"><p id="label2"></p><p class="labels">Max Difference</p></td>
+			</tr>
+			<tr>
+				<td bgcolor="#fff"><p id="label3"></p><p class="labels">Last Alert Time</p></td>
+				<td bgcolor="#fff"><p id="label4"></p><p class="labels">Alert Count</p></td>
+			</tr>
+			</table>
+		</td> 
+	  </tr>
+	</table>
+	</div>
+	<div>
+	<button id="emailIdEllipsis" onclick="$(this).openModal()" class="w3-btn w3-lightgray w3-xlarge" style="color:#d9d9d9;">
+	<i class="fa fa-ellipsis-v"></i>
+	</button>
+	<div id="emailId-modal" class="w3-modal">
+	<div class="w3-modal-content">
+	<header class="w3-container w3-light-grey"> 
+		<table>
+			<td><h6>Please enter adminstrator emailid</h6></td>
+			<td style="padding-left: 225px;">
+			<i id="modalClose" onclick="document.getElementById('emailId-modal').style.display='none'" class="fa fa-times w3-button" style="color:#BEBEBE; font-size:12px;"/>
+			</td>
+		</table>
+	</header>
+	<div class="w3-container w3-light-grey">
+	  <input class="modalTextbox" type="email" placeholder="example@email.com" name="emailId" id="emailId" oninvalid="this.setCustomValidity('Please provide a valid email address!')" oninput="setCustomValidity('')" required/>
+	  <button id="modalBtn" class="modalButton" type="submit" onclick="save()">Save</button>
+	</div>
+	<footer class="w3-container w3-light-grey">
+    <p></br></p>
+    </footer>
+	<div class="container" style="background-color:#f1f1f1">
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	<script>
+
+	function save(){
+		if(document.getElementById('emailId').validity.valid){
+			document.getElementById('emailId-modal').style.display='none';
+		}
+	}
+	
+	$(function(){				
+		$('#modalBtn').click(function(e){
+			console.log('Save button clicked');
+			var email = document.getElementById('emailId').value;
+			var data = {};
+			data.emailId = email;
+			if(document.getElementById('emailId').validity.valid){
+				$.ajax({
+					type: 'POST',
+					data: JSON.stringify(data),
+					contentType: 'application/json',
+					url: '/',						
+					success: function(data) {
+						console.log('Success on save button clicked');
+					}
+				});
+			}
+		});				
+	});
+	</script>
+	
+</body>
+</html>
